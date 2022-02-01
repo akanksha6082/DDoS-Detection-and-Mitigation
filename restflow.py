@@ -7,8 +7,9 @@ rt = 'http://127.0.0.1:8008'
 name = 'icmp'
 
 def sig_handler(signal,frame):
-  requests.delete(rt + '/flow/' + name + '/json');
+  requests.delete(rt + '/flow/' + name + '/json')
   exit(0)
+
 signal.signal(signal.SIGINT, sig_handler)
 
 flow = {'keys':'ipsource,ipdestination,macsource,macdestination',
@@ -25,9 +26,6 @@ while 1 == 1:
   if r.status_code != 200: break
   flows = r.json()
   if len(flows) == 0: continue
-  else:
-    print(len(flows))
-
   flowID = flows[0]["flowID"]
   flows.reverse()
   for f in flows:
