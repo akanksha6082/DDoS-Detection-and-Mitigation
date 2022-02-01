@@ -1,5 +1,6 @@
 """
 A Flow collector POX component.
+Add this file in pox/pox/ext folder.
 
 """
 
