@@ -11,6 +11,11 @@ from mininet.log import setLogLevel, info
 from mininet.link import TCLink, Intf
 from subprocess import call
 
+# Compile and run sFlow helper script
+# - configures sFlow on OVS
+# - posts topology to sFlow-RT
+execfile('/home/akanksha/sflow-rt/extras/sflow.py') 
+
 def NetworkTopo():
 
     net = Mininet( topo=None,
@@ -36,8 +41,6 @@ def NetworkTopo():
     for i in range(0, n_switches):
         switches.append(net.addSwitch('s%s' % (i+1), cls=OVSKernelSwitch))
         
-   
-
     #add hosts
     hosts = []
     k = 1
@@ -46,8 +49,8 @@ def NetworkTopo():
             hosts.append(net.addHost('h%s' % k, cls=Host, ip='10.0.0.%s'%k, defaultRoute=None))
             
             #create link between host and switch
-            
             net.addLink(hosts[k-1], switches[j])
+
             k += 1
 
     hosts.append(net.addHost('h%s' % k, cls=Host, ip='10.0.0.%s'%k, defaultRoute=None))
@@ -65,29 +68,14 @@ def NetworkTopo():
     net.addLink(switches[5], switches[1])
     net.addLink(switches[5], hosts[k-1])
 
-    info( '*** Starting network\n')
-    net.build()
-
-    info( '*** Starting controllers\n')
-    for controller in net.controllers:
-        controller.start()
-
-    info( '*** Starting switches\n')
-
-    net.get('s1').start([c0])
-    net.get('s2').start([c0])
-    net.get('s3').start([c0])
-    net.get('s4').start([c0])
-    net.get('s5').start([c0])
-    net.get('s6').start([c0])
-
+    # start the network
+    net.start()
     info( '*** Configured switches and hosts\n')
     
-    info( '*** Testing Network connectivity\n\n')
+    info( '*** Testing Network connectivity\n')
     sleep(1)
     net.pingAll()
     
-   
     CLI(net) 
     net.stop()
     
