@@ -68,17 +68,11 @@ def NetworkTopo():
     net.addLink(switches[5], switches[1])
     net.addLink(switches[5], hosts[k-1])
 
-    # start the network
     net.start()
     info( '*** Configured switches and hosts\n')
-    
-    info( '*** Testing Network connectivity\n')
-    sleep(1)
-    net.pingAll()
-    
     CLI(net) 
     net.stop()
-    
+
 if __name__ == "__main__":
 
     setLogLevel('info')
