@@ -46,7 +46,7 @@ class FlowCollector(EventMixin):
         }
 
         self.listenTo(core)
-        self.window_size = 25
+        self.window_size = 50
         self.count  = 0
         self.flow_list = []
     
