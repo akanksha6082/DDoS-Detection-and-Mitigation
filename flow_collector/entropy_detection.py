@@ -34,14 +34,10 @@ class EntropyDetection(EventMixin):
         collect_stats = CollectStats()
         destination_count, src_dest_count, mac_ip = collect_stats.get_count(event.flow_list)
         
-        print(destination_count)
+        dynamic_threshold, window_entropy = collect_stats.get_adaptive_threshold_entropy(destination_count, src_dest_count)
+        print(destination_count) 
         print(src_dest_count)
-        print(mac_ip)
-
-        #send to calculate the adaptive threshold
-        #send to calculate entropy
-        #detect
-        #mitigate karaychay
+        print("dynamic threshold : {0}\nwindow entropy : {1}\n".format(dynamic_threshold, window_entropy))
         
         self.window_count += 1
 
