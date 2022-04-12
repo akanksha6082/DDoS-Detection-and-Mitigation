@@ -38,7 +38,7 @@ def main(argv):
                 print(repr(packet))
 
                 #send  one packet per second
-                sendp(packet, iface = interface.rstrip(), inter = 1)
+                sendp(packet, iface = interface.rstrip(), inter = 2)
                 count -= 1
             except(KeyboardInterrupt):
                 sys.exit(0)

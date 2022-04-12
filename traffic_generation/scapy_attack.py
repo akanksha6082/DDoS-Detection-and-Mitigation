@@ -20,7 +20,7 @@ def main(argv):
             print(repr(packets))
 
             #send 10 packets per second
-            sendp(packets, iface = interface.rstrip(), inter = 0.025)
+            sendp(packets, iface = interface.rstrip(), inter = 0.010)
             
         except(KeyboardInterrupt):
             sys.exit(0)
