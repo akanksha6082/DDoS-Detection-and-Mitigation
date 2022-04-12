@@ -1,5 +1,6 @@
 import math
 import sys
+import re
 
 class CollectStats():
     
@@ -58,6 +59,8 @@ class CollectStats():
 
         dest_entropy = {}
         
+        print("dictionary : {0}\n".format(threshold_dict))
+
         #destination entropy
         for dest in threshold_dict.keys():
             
@@ -70,6 +73,8 @@ class CollectStats():
                 total_entropy += pi * math.log(pi, 2)
             
             dest_entropy[dest] = -total_entropy
+        
+        print("Entropy values : {}\n".format(dest_entropy))
         
         #calculate mean and squared mean value
         c = 0
@@ -85,22 +90,91 @@ class CollectStats():
         # calulate standarad deviation and mean 
         mean = c / total_dest_count
 
+        print("Mean : {}".format(mean))
+
         standard_deviation = math.sqrt((c2/total_dest_count) - (math.pow(mean, 2)))
 
+        print("standarad deviation : {}".format(standard_deviation))
+
         # threshold calculation
-        window_threshold = mean + 3 * standard_deviation
+        window_threshold = mean + 3 * standard_deviation  
         window_entropy = 0
 
         # calculation of window entropy
         for entropy in dest_entropy.values():
             window_entropy += entropy
         
-        return(window_threshold, window_entropy)
+        return (window_threshold, window_entropy)
             
+    def find_victim(self, destination_count):
+        itemMaxValue = max(destination_count.items(), key=lambda x : x[1])
+        print('victim destination : {} and count : {}\n'.format( itemMaxValue[0], itemMaxValue[1]))
+        return itemMaxValue[0]
     
-    def get_mac_ip(self):
-        pass
+    def find_mac_addr(self, data, source, destination):
 
+        mac_src = ""
+        mac_dst = ""
+
+        for dict in data:
+            for key in dict.keys():
+                if source in dict[key]["source"]:
+                    mac_src = ':'.join(re.findall('..', key.lower()))
+                if destination in dict[key]["source"]:
+                    mac_dst = ':'.join(re.findall('..', key.lower()))
+                if mac_dst and mac_src:
+                    break
+
+        return (mac_src, mac_dst)
+    
+    def find_dest_mac(self, data, destination):
+
+        mac_dst = ""
+
+        for dict in data:
+            for key in dict.keys():
+                if destination in dict[key]["source"]:
+                    mac_dst = ':'.join(re.findall('..', key.lower()))
+                    break
+        
+        return mac_dst
+
+    def find_source(self, src_dest_count, destination):
+        sources = {}
+        
+        for dict in src_dest_count:
+            for tup in dict.keys():
+                src, dest = tup
+                if(dest == destination):
+                    if(sources.__contains__(src)):
+                        sources[src] += dict[tup]
+                    else:
+                        sources[src] = dict[tup]
+        
+        print(sources)
+
+        #find the source with max count
+        itemMaxValue = max(sources.items(), key=lambda x : x[1])
+        print('suspected source : {} and count : {}\n'.format( itemMaxValue[0], itemMaxValue[1]))
+        return itemMaxValue[0]
+    
+    def find_DDOS_source(self, data):
+        
+        sources = set()
+        
+        for dict in data:
+            for key in dict.keys():
+                if(len(dict[key]["source"]) > 1):
+                    sources.add(':'.join(re.findall('..', key.lower())))
+                    
+        return list(sources)
+
+
+
+
+
+    
+            
         
 
     

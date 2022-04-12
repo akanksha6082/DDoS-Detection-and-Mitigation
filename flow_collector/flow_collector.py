@@ -2,7 +2,6 @@
 A Flow collector POX component.
 Add this file in pox/ext folder.
 run pox controller as ./pox.py flow_collector
-change the location of the file
 """
 
 # Import some POX stuff

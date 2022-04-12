@@ -1,7 +1,7 @@
 """
 A Flow collector POX component.
 Add this file in pox/ext folder.
-run pox controller as ./pox.py test_collector
+run pox controller as ./pox.py flow_collector
 change the location of the file
 """
 
@@ -46,7 +46,7 @@ class FlowCollector(EventMixin):
         }
 
         self.listenTo(core)
-        self.window_size = 50
+        self.window_size = 100
         self.count  = 0
         self.flow_list = []
     
